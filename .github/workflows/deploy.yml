@@ -17,16 +17,23 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Uses actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
-      - uses: actions/configure-pages@v4
+
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: ./out
-      - id: deployment
+          
+          path: './out'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
